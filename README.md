@@ -1,5 +1,3 @@
 # dunning-payment-mvp
-MVP: Dunning &amp; payment recovery (Stripe, PayPal, Whop)
 
-Runs in GitHub Codespaces + GitHub Pages.
-See `.devcontainer/` and `.github/workflows/` for dev/test/deploy automation.
+Generated bundle - complete repo scaffold. Generated: 2025-10-21T10:31:00.725285Z

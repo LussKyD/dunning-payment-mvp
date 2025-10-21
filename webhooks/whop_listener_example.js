@@ -1,0 +1,1 @@
+const express = require('express'); const bodyParser=require('body-parser'); const app=express(); app.use(bodyParser.json()); app.post('/webhooks/payments/whop',(req,res)=>{ console.log('whop', req.body && req.body.id); res.status(200).send('ok'); }); app.listen(3001, ()=>console.log('whop listener 3001'));

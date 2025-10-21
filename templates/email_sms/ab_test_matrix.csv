@@ -1,0 +1,2 @@
+test_group,trigger,variant,subject_excerpt,metric_to_track
+g1,initial_failure,short,"Payment failed — please update your card",recovery_rate
