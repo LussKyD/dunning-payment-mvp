@@ -1,0 +1,10 @@
+{
+  "name":"Dunning Payment Recovery Dev",
+  "image":"mcr.microsoft.com/devcontainers/javascript-node:18",
+  "features": {
+    "ghcr.io/devcontainers/features/postgres:1": {"version":"14"},
+    "ghcr.io/devcontainers/features/redis:1": {}
+  },
+  "postCreateCommand":"cd api && npm ci && npm run migrate || true",
+  "forwardPorts":[3000,5173]
+}
