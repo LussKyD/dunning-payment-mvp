@@ -4,6 +4,10 @@ const bodyParser = require("body-parser");
 const app = express();
 app.use(bodyParser.json());
 
+// ✅ include webhook routes
+const webhookRoutes = require("./routes/webhooks");
+app.use("/api/webhooks", webhookRoutes);
+
 // ✅ Health check route
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
