@@ -1,3 +1,3 @@
 # dunning-payment-mvp
 
-complete repo scaffold. 
+Generated bundle - complete repo scaffold.
