@@ -1,0 +1,1 @@
+console.log('Worker stub started. In production use BullMQ or SQS.'); setInterval(()=>{ console.log('Worker tick - would process pending retries'); }, 15000);

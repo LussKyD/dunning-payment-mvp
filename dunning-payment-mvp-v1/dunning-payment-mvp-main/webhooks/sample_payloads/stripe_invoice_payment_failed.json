@@ -1,0 +1,36 @@
+{
+  "id": "evt_test_invoice_payment_failed_001",
+  "object": "event",
+  "api_version": "2024-06-01",
+  "created": 1730000000,
+  "type": "invoice.payment_failed",
+  "livemode": false,
+  "data": {
+    "object": {
+      "id": "in_test_001",
+      "object": "invoice",
+      "customer": "cus_test_123",
+      "subscription": "sub_test_123",
+      "status": "open",
+      "attempt_count": 1,
+      "amount_due": 5000,
+      "currency": "usd",
+      "next_payment_attempt": 1730003600,
+      "last_payment_error": {
+        "charge": "ch_test_declined",
+        "code": "card_declined",
+        "decline_code": "insufficient_funds",
+        "message": "Your card has insufficient funds.",
+        "type": "card_error"
+      },
+      "billing_reason": "subscription_create",
+      "collection_method": "charge_automatically",
+      "hosted_invoice_url": "https://dashboard.stripe.com/test/invoices/in_test_001",
+      "created": 1730000000
+    }
+  },
+  "request": {
+    "id": "req_test_001",
+    "idempotency_key": "invoice_in_test_001_attempt_1"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "dunning-payment-mvp",
+  "private": true,
+  "scripts": {
+    "dev:api": "npm --prefix api start",
+    "dev:ui": "npm --prefix ui run dev",
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:ui\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
