@@ -1,23 +1,41 @@
-name: CI - Tests
+name: UI Build & Test
+
+# Run on pushes and PRs to main & ranch, and allow manual runs
 on:
   push:
-    branches: [ main ]
+    branches: ["main", "ranch"]
+    paths:
+      - 'ui/**'
   pull_request:
+    branches: ["main"]
+    paths:
+      - 'ui/**'
+  workflow_dispatch: {}
+
 jobs:
-  test:
+  ui-build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ui
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
-      - name: Install API deps
-        run: |
-          cd api
-          npm ci
-      - name: Run migrations
-        run: |
-          cd api
-          npm run migrate || true
-      - name: Smoke check payloads
-        run: ls webhooks/sample_payloads || true
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies (CI)
+        run: npm ci
+
+      - name: Build (fails on error)
+        run: npm run build
+
+      - name: Upload built artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-dist
+          path: ./dist
