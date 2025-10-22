@@ -1,9 +1,16 @@
-name: Build UI (ranch) and optionally deploy to Pages
+name: Build & Deploy UI
+
 on:
   push:
-    branches: [ ranch ]
+    branches: ["main"]
     paths:
       - 'ui/**'
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to build (optional)'
+        required: false
+        default: 'ranch'
 
 jobs:
   build:
@@ -18,8 +25,26 @@ jobs:
           node-version: 20
       - run: npm ci
       - run: npm run build
-      - name: Upload artifact (dist)
+      - name: Upload UI build artifact
         uses: actions/upload-artifact@v4
         with:
           name: ui-dist
           path: ./dist
+
+  # Optional: deploy to GitHub Pages (uncomment to enable)
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ui-dist
+          path: ./dist
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
