@@ -8,16 +8,40 @@ export default function App() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Log the resolved import.meta.env and API_BASE for debugging in Codespaces
+    // (this will appear in the browser console)
+    try {
+      // eslint-disable-next-line no-console
+      console.log("VITE_API_URL (import.meta.env):", import.meta.env.VITE_API_URL);
+      // eslint-disable-next-line no-console
+      console.log("API_BASE (used by api.js):", API_BASE);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn("Could not read import.meta.env in this environment", e);
+    }
+
     async function checkHealth() {
+      setStatus("Checking...");
       try {
-        const res = await api.get("/api/health"); // ✅ Correct path
+        const res = await api.get("/api/health"); // correct path
         setData(res.data);
         setStatus("✅ API Connected");
         setError(null);
       } catch (err) {
-        console.error("Health check failed:", err);
+        // axios throws a generic 'Network Error' for CORS/preflight or network issues
+        let msg = "Network Error";
+        if (err && err.response && err.response.data) {
+          try {
+            msg = JSON.stringify(err.response.data);
+          } catch (e) {
+            msg = String(err.response.data);
+          }
+        } else if (err && err.message) {
+          msg = err.message;
+        }
+        setError(msg);
         setStatus("❌ API Offline");
-        setError(err.message || String(err));
+        setData(null);
       }
     }
 
@@ -25,35 +49,32 @@ export default function App() {
   }, []);
 
   return (
-    <div
-      style={{
-        maxWidth: 900,
-        margin: "40px auto",
-        padding: 24,
-        background: "#fff",
-        borderRadius: 12,
-      }}
-    >
+    <div style={{ padding: 20, fontFamily: "system-ui, sans-serif" }}>
       <h1>Dunning Admin</h1>
-      <p>
+      <div>
         <strong>Status:</strong> {status}
-      </p>
-      <p>
-        <small>
-          Using API_BASE: <code>{API_BASE}</code>
-        </small>
-      </p>
+      </div>
+
+      <div style={{ marginTop: 12 }}>
+        <div>
+          <strong>Using API_BASE:</strong> {API_BASE}
+        </div>
+      </div>
+
       {data && (
         <pre
           style={{
-            background: "#f6f8fa",
+            marginTop: 12,
             padding: 12,
+            background: "#f6f8fa",
             borderRadius: 6,
+            whiteSpace: "pre-wrap",
           }}
         >
           {JSON.stringify(data, null, 2)}
         </pre>
       )}
+
       {error && (
         <div style={{ color: "crimson", marginTop: 12 }}>
           <strong>Error:</strong> {error}
